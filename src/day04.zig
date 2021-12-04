@@ -140,39 +140,31 @@ fn run(filename: []const u8) !Answer {
     }
 
     // Part 1
-    var draw_idx: usize = 0;
-    var board_idx: usize = undefined;
-    bingo_loop: while (draw_idx < drawn_numbers.items.len) : (draw_idx += 1) {
-        board_idx = 0;
-        while (board_idx < boards.items.len) : (board_idx += 1) {
-            boards.items[board_idx].mark(drawn_numbers.items[draw_idx]);
-            if (boards.items[board_idx].has_won()) {
-                break :bingo_loop;
-            }
-        }
-    }
-    const score1 = boards.items[board_idx].eval_score(drawn_numbers.items[draw_idx]);
+    var first_win_draw_idx: usize = drawn_numbers.items.len;
+    var first_win_board_idx: usize = undefined;
 
     // Part 2
-    // Reset the boards
-    for (boards.items) |board| {
-        board.unmark_all();
-    }
-    var latest_win_draw_idx: usize = 0;
-    var latest_win_board_idx: usize = undefined;
+    var last_win_draw_idx: usize = 0;
+    var last_win_board_idx: usize = undefined;
+
     for (boards.items) |board, bi| {
         for (drawn_numbers.items) |number, ni| {
             board.mark(number);
             if (board.has_won()) {
-                if (ni > latest_win_draw_idx) {
-                    latest_win_draw_idx = ni;
-                    latest_win_board_idx = bi;
+                if (ni < first_win_draw_idx) {
+                    first_win_draw_idx = ni;
+                    first_win_board_idx = bi;
+                }
+                if (ni > last_win_draw_idx) {
+                    last_win_draw_idx = ni;
+                    last_win_board_idx = bi;
                 }
                 break;
             }
         }
     }
-    var score2: u32 = boards.items[latest_win_board_idx].eval_score(drawn_numbers.items[latest_win_draw_idx]);
+    const score1 = boards.items[first_win_board_idx].eval_score(drawn_numbers.items[first_win_draw_idx]);
+    const score2: u32 = boards.items[last_win_board_idx].eval_score(drawn_numbers.items[last_win_draw_idx]);
 
     for (boards.items) |board| {
         board.deinit();
