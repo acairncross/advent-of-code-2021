@@ -58,6 +58,6 @@ pub fn main() !void {
 
 test {
     const answer = try run("test-inputs/" ++ @typeName(@This()) ++ ".txt");
-    try std.testing.expect(answer.@"0" == 7);
-    try std.testing.expect(answer.@"1" == 5);
+    try std.testing.expectEqual(answer.@"0", 7);
+    try std.testing.expectEqual(answer.@"1", 5);
 }

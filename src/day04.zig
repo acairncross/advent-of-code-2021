@@ -181,6 +181,6 @@ pub fn main() !void {
 
 test {
     const answer = try run("test-inputs/" ++ @typeName(@This()) ++ ".txt");
-    try std.testing.expect(answer.@"0" == 4512);
-    try std.testing.expect(answer.@"1" == 1924);
+    try std.testing.expectEqual(answer.@"0", 4512);
+    try std.testing.expectEqual(answer.@"1", 1924);
 }
