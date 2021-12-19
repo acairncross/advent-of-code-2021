@@ -302,10 +302,10 @@ fn run(filename: []const u8) !Answer {
         var i: usize = 0; // Skip the first opening bracket
         var num = (try parseNumber(line, &i, &arena));
 
-        try linkTree(num.*, &gpa.allocator);
+        try linkTree(num.*, &arena.allocator);
 
         var cloned_number = try clone(num.*, &arena);
-        try linkTree(cloned_number.*, &gpa.allocator);
+        try linkTree(cloned_number.*, &arena.allocator);
         try numbers.append(cloned_number);
 
         // Add numbers
@@ -336,10 +336,10 @@ fn run(filename: []const u8) !Answer {
                 continue;
             }
             var num1_clone = try clone(num1.*, &arena);
-            try linkTree(num1_clone.*, &gpa.allocator);
+            try linkTree(num1_clone.*, &arena.allocator);
 
             var num2_clone = try clone(num2.*, &arena);
-            try linkTree(num2_clone.*, &gpa.allocator);
+            try linkTree(num2_clone.*, &arena.allocator);
 
             var num3 = try mergeNumbers(num1_clone, num2_clone, &arena);
             while (true) {
